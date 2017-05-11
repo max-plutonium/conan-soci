@@ -1,0 +1,33 @@
+[settings]
+
+
+[requires]
+    SOCI/3.Y.Z
+
+[options]
+
+
+[full_settings]
+
+
+[full_requires]
+    SOCI/3.2.3@laeknaromur/stable:6f161f7b34576b6f4ff76dff7d86b015a6d1c76d
+
+[full_options]
+    SOCI:shared=False
+    SOCI:with_db2=False
+    SOCI:with_firebird=False
+    SOCI:with_mysql=False
+    SOCI:with_odbc=False
+    SOCI:with_oracle=False
+    SOCI:with_postgresql=True
+    SOCI:with_sqlite3=False
+
+[scope]
+    dev=True
+
+[recipe_hash]
+
+
+[env]
+

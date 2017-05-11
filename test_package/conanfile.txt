@@ -1,0 +1,5 @@
+[requires]
+SOCI/3.2.3@laeknaromur/stable
+
+[generators]
+cmake
