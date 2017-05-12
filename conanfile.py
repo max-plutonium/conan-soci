@@ -1,5 +1,4 @@
 from conans import ConanFile, CMake, tools
-import os
 
 
 class SociConan(ConanFile):
@@ -20,6 +19,7 @@ class SociConan(ConanFile):
         "with_mysql=False", "with_odbc=False", "with_oracle=False",\
         "with_postgresql=False", "with_sqlite3=False"
     generators = "cmake"
+    build_dir = "./"
 
     def source(self):
         tools.download(
@@ -33,7 +33,6 @@ conan_basic_setup()''')
 
     def build(self):
         cmake = CMake(self)
-        self.build_dir = "./"
 
         cmake.definitions["WITH_DB2"] = "ON" if self.options.with_db2 else "OFF"
         cmake.definitions["WITH_FIREBIRD"] = "ON" if self.options.with_firebird else "OFF"
@@ -53,6 +52,8 @@ conan_basic_setup()''')
 
     def package(self):
         self.copy("*.h", dst="include", src="install/include")
+        self.copy("*.lib", dst="lib", keep_path=False)
+        self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
 
