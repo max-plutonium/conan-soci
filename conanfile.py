@@ -3,9 +3,12 @@ from conans import ConanFile, CMake, tools
 
 class SociConan(ConanFile):
     name = "SOCI"
+    description = """SOCI is a database access library for C++ that makes the illusion
+    of embedding SQL queries in the regular C++ code, staying entirely
+    within the Standard C++."""
     version = "3.2.3"
     license = "Boost Software License - Version 1.0"
-    url = ""
+    url = "https://github.com/laeknaromur/conan-soci"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False],
                "with_db2": [True, False],
@@ -54,12 +57,16 @@ conan_basic_setup()''')
         self.copy("*.h", dst="include", src="install/include")
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
+        self.copy("*.so.*", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
+        self.cpp_info.includedirs = ["include", "include/soci"]
         self.cpp_info.libs = ["soci_core",
                               "soci_empty"]
+
+        if self.settings.os != "Windows":
+            self.cpp_info.libs.append("dl")
 
         if self.options.with_db2:
             self.cpp_info.libs.append("soci_db2")
