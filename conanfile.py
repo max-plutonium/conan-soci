@@ -1,3 +1,4 @@
+import subprocess
 from conans import ConanFile, CMake, tools
 
 
@@ -84,7 +85,12 @@ conan_basic_setup()''')
             self.cpp_info.libs.append("soci_oracle")
 
         if self.options.with_postgresql:
+            self.output.info("Using system-wide PostgreSQL")
+            libpq_cflags = subprocess.check_output(
+                ["pkg-config", "--cflags", "libpq"]).strip().decode("utf-8")
+            self.cpp_info.includedirs.append(libpq_cflags[2:])
             self.cpp_info.libs.append("soci_postgresql")
+            self.cpp_info.libs.append("pq")
 
         if self.options.with_sqlite3:
             self.cpp_info.libs.append("soci_sqlite3")
