@@ -94,3 +94,12 @@ conan_basic_setup()''')
 
         if self.options.with_sqlite3:
             self.cpp_info.libs.append("soci_sqlite3")
+
+    def system_requirements(self):
+        pack_names = []
+        if tools.os_info.is_linux and self.options.with_postgresql:
+            pack_names.append("libpq-dev")
+
+        if pack_names:
+            installer = tools.SystemPackageTool()
+            installer.install(pack_names)
