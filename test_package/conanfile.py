@@ -2,9 +2,9 @@ import os
 from conans import ConanFile, CMake, tools, RunEnvironment
 
 class SociTestConan(ConanFile):
-    user = os.getenv("CONAN_USERNAME", "laeknaromur")
+    user = os.getenv("CONAN_USERNAME", "akazantsev")
     channel = os.getenv("CONAN_CHANNEL", "testing")
-    requires = "SOCI/3.2.3@{}/{}".format(user, channel), \
+    requires = "SOCI/4.0.0@{}/{}".format(user, channel), \
                "catch/1.5.0@TyRoXx/stable"
     settings = "os", "compiler", "arch", "build_type"
     default_options = "SOCI:with_postgresql=True"
