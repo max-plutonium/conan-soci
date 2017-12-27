@@ -103,7 +103,7 @@ conan_basic_setup()''')
         if self.options.with_sqlite3:
             soci_libs.append("soci_sqlite3")
 
-        soci_libs.append("soci_core")
+        soci_libs.extend(["soci_core", "soci_empty"])
         
         if self.settings.os == "Windows" and not self.options.shared:
             for idx in range(len(soci_libs)):
