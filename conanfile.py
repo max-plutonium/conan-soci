@@ -29,7 +29,7 @@ class SociConan(ConanFile):
             "https://github.com/SOCI/soci/archive/{}.zip".format(self.commit),
             "source.zip")
         tools.unzip("source.zip", ".")
-        tools.replace_in_file("soci-{}/src/CMakeLists.txt".format(self.commit),
+        tools.replace_in_file("soci-{}/CMakeLists.txt".format(self.commit),
                               "project(SOCI)", '''project(SOCI)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
@@ -112,10 +112,4 @@ conan_basic_setup()''')
         self.cpp_info.libs.extend(soci_libs)
 
     def system_requirements(self):
-        pack_names = []
-        if tools.os_info.is_linux and self.options.with_postgresql:
-            pack_names.append("libpq-dev")
-
-        if pack_names:
-            installer = tools.SystemPackageTool()
-            installer.install(pack_names)
+        pass
