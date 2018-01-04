@@ -48,6 +48,7 @@ conan_basic_setup()''')
         cmake.definitions["WITH_POSTGRESQL"] = "ON" if self.options.with_postgresql else "OFF"
         cmake.definitions["WITH_SQLITE3"] = "ON" if self.options.with_sqlite3 else "OFF"
 
+        cmake.definitions["SOCI_TESTS"] = "OFF"
         cmake.definitions["SOCI_STATIC"] = "OFF" if self.options.shared else "ON"
         cmake.definitions["SOCI_SHARED"] = "ON" if self.options.shared else "OFF"
         cmake.definitions["BUILD_SHARED_LIBS"] = "1" if self.options.shared else "0"
@@ -76,40 +77,35 @@ conan_basic_setup()''')
 
     def package_info(self):
         self.cpp_info.includedirs = ["include", "include/soci"]
-        self.cpp_info.libs = []
-        soci_libs = []
+        self.cpp_info.libs = ["soci_core", "soci_empty"]
         
         if self.settings.os == "Linux":
             self.cpp_info.libs.append("dl")
             
         if self.options.with_db2:
-            soci_libs.append("soci_db2")
+            self.cpp_info.libs.append("soci_db2")
 
         if self.options.with_firebird:
-            soci_libs.append("soci_firebird")
+            self.cpp_info.libs.append("soci_firebird")
 
         if self.options.with_mysql:
-            soci_libs.append("soci_mysql")
+            self.cpp_info.libs.append("soci_mysql")
 
         if self.options.with_odbc:
-            soci_libs.append("soci_odbc")
+            self.cpp_info.libs.append("soci_odbc")
 
         if self.options.with_oracle:
-            soci_libs.append("soci_oracle")
+            self.cpp_info.libs.append("soci_oracle")
 
         if self.options.with_postgresql:
-            soci_libs.append("soci_postgresql")
+            self.cpp_info.libs.append("soci_postgresql")
 
         if self.options.with_sqlite3:
-            soci_libs.append("soci_sqlite3")
+            self.cpp_info.libs.append("soci_sqlite3")
 
-        soci_libs.extend(["soci_core", "soci_empty"])
-        
         if self.settings.os == "Windows" and not self.options.shared:
-            for idx in range(len(soci_libs)):
-                soci_libs[idx] = "lib" + soci_libs[idx]
-        
-        self.cpp_info.libs.extend(soci_libs)
+            for idx in range(len(self.cpp_info.libs)):
+                self.cpp_info.libs[idx] = "lib" + self.cpp_info.libs[idx]
 
     def system_requirements(self):
         pass

@@ -10,4 +10,4 @@ include_directories(
     ${PostgreSQL_INCLUDE_DIRS})
 
 add_executable(test-empty test-empty.cpp)
-target_link_libraries(test-empty CONAN_PKG::SOCI CONAN_PKG::catch ${PostgreSQL_LIBRARIES})
+target_link_libraries(test-empty ${PostgreSQL_LIBRARIES} CONAN_PKG::SOCI CONAN_PKG::catch)
