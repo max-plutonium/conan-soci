@@ -8,7 +8,7 @@ class SociConan(ConanFile):
     version = "4.0.0"
     commit = "8b00c6bd00e5dec8dd91d42bdad3b3145ce8290f"
     license = "Boost Software License - Version 1.0"
-    url = "https://github.com/akazantsev/conan-soci"
+    url = "https://github.com/o-martynenko/conan-soci"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False],
                "with_db2": [True, False],
