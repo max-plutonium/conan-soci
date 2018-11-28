@@ -8,9 +8,11 @@ class SociConan(ConanFile):
     version = "4.0.0"
     commit = "8b00c6bd00e5dec8dd91d42bdad3b3145ce8290f"
     license = "Boost Software License - Version 1.0"
-    url = "https://github.com/o-martynenko/conan-soci"
+    url = "https://github.com/max-plutonium/conan-soci"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False],
+               "with_tests": [True, False],
+               "with_asan": [True, False],
                "with_db2": [True, False],
                "with_firebird": [True, False],
                "with_mysql": [True, False],
@@ -18,7 +20,8 @@ class SociConan(ConanFile):
                "with_oracle": [True, False],
                "with_postgresql": [True, False],
                "with_sqlite3": [True, False]}
-    default_options = "shared=False", "with_db2=False", "with_firebird=False",\
+    default_options = "shared=False", "with_tests=False", "with_asan=False",\
+        "with_db2=False", "with_firebird=False",\
         "with_mysql=False", "with_odbc=False", "with_oracle=False",\
         "with_postgresql=False", "with_sqlite3=False"
     generators = "cmake"
@@ -48,7 +51,8 @@ conan_basic_setup()''')
         cmake.definitions["WITH_POSTGRESQL"] = "ON" if self.options.with_postgresql else "OFF"
         cmake.definitions["WITH_SQLITE3"] = "ON" if self.options.with_sqlite3 else "OFF"
 
-        cmake.definitions["SOCI_TESTS"] = "OFF"
+        cmake.definitions["SOCI_TESTS"] = "ON" if self.options.with_tests else "OFF"
+        cmake.definitions["SOCI_ASAN"] = "ON" if self.options.with_asan else "OFF"
         cmake.definitions["SOCI_STATIC"] = "OFF" if self.options.shared else "ON"
         cmake.definitions["SOCI_SHARED"] = "ON" if self.options.shared else "OFF"
         cmake.definitions["BUILD_SHARED_LIBS"] = "1" if self.options.shared else "0"
@@ -72,8 +76,8 @@ conan_basic_setup()''')
         self.copy("*.h", dst="include", src="install/include")
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so.*", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
+        self.copy("*.so*", dst="lib", links=True, keep_path=False)
+        self.copy("*.a", dst="lib", links=True, keep_path=False)
 
     def package_info(self):
         self.cpp_info.includedirs = ["include", "include/soci"]
